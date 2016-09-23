@@ -1,0 +1,82 @@
+
+#include <cstdlib>
+
+using namespace std;
+
+class node {
+node(node *link, int data){
+		this->data = data;
+		this->link = link;
+	}
+	node* link() { return (this->link); }
+	void set_data(const int& newData) {
+		data = newData;
+ 	}
+	void set_link(node* newLink) {
+		this->link = link;
+ 	}
+	friend class list;
+private:
+	int data;
+	node *link;
+};
+
+class list {
+public:
+	void insert_head(node*& head_ptr, const int& head) {
+		head_ptr = new node(head_ptr, head);
+	}
+	void insert(node* prev_ptr, const int& data) {
+		node* insert;
+		insert = new node(prev_ptr->link, data);
+		prev_ptr->set_link(insert);
+	}
+	node* search(const int& target) {
+		for (node* iterate = head_ptr; iterate != nullptr; iterate = iterate->link) {
+			if (target == iterate->data) {
+				return iterate;
+			}
+		}
+		return false;
+	}
+	void copy(const node* source, node*& head_ptr1, node*& tail_ptr1) {
+		if (source == nullptr) {
+			return;
+		}
+		insert(head_ptr1, source->data);
+		node* newTail = head_ptr1;
+		source = source->link;
+		while (source != NULL) {
+			insert(newTail, source->data);
+			newTail = newTail->link;
+			source = source->link;
+		}
+	}
+
+	void insertAt(int index, int data) {
+		node* current = head_ptr;
+		for (int i = 0; i < index; ++i) {
+			current = current->link;
+		}
+		node* insert = new node(nullptr, data);
+		node* node_save = current->link;
+		current->link = insert;
+		insert->link = node_save;
+}
+
+	void removeHead(node*& headPtr) {
+		node* remove_ptr = headPtr;
+		headPtr = headPtr->link;
+		delete remove_ptr;
+	}
+
+	void clearList(node*& headptr) {
+		while (headptr != NULL) {
+			removeHead(headptr);
+		}
+	}
+
+private:
+	node* head_ptr;
+	node* null_ptr;
+}
